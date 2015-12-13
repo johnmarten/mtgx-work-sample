@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const request = require('request');
+const parseString = require('xml2js').parseString;
 
 const path = '/web-se/film/';
 const viaplayUrl = 'https://content.viaplay.se';
@@ -28,9 +29,7 @@ function parseJSON(string) {
   }
 
   if (json["_embedded"]) {
-    return {
-      id: json["_embedded"]["viaplay:blocks"][0]["_embedded"]["viaplay:product"]["content"]["imdb"]["id"].match(/\d+/)[0]
-    };
+    return json["_embedded"]["viaplay:blocks"][0]["_embedded"]["viaplay:product"]["content"];
   } else {
     return {};
   }
@@ -38,9 +37,25 @@ function parseJSON(string) {
 
 router.get(`${path}:name`, (req, res, next) => {
   fetchData(`${viaplayUrl}${path}${req.params.name}`, (body) => {
-    const result = parseJSON(body);
-    fetchData(`${traileraddictUrl}?imdb=${result.id}&count=1&width=680`, (body) => {
-      res.render('index', {result: body});
+
+    const content = parseJSON(body);
+    const id = content.imdb.id.match(/\d+/)[0];
+
+    fetchData(`${traileraddictUrl}?imdb=${id}&count=1&width=680&credit=no`, (body) => {
+
+      parseString(body, (err, result) => {
+        res.render('index', {
+          embed: result.trailers.trailer[0].embed,
+          imdb: content.imdb,
+          duration: content.duration,
+          parentalRating: content.parentalRating,
+          actors: content.people.actors,
+          directors: content.people.directors,
+          production: content.production,
+          synopsis: content.synopsis,
+          title: content.title
+        });
+      });
     }, (err) => {
       next(err);
     });
