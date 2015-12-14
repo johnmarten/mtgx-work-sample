@@ -5,12 +5,96 @@
     </a>
 </header>
 
-{{{embed}}}
+<section class="main">
 
-<h1>{{{title}}}</h1>
+    <section class="embed">
+        {{{embed}}}
+    </section>
+
+    <article class="info">
+
+        <h1>{{title}}</h1>
+        <h3>{{#each genres}}
+            {{#if @first}}
+                {{title}},
+            {{else }}
+                {{title}}
+            {{/if}}
+        {{/each}}
+            | {{production.year}}
+        </h3>
+
+        <div class="duration">{{duration.readable}}</div>
+        <p><b>{{imdb.rating}}</b> <i>från {{imdb.votes}} användare</i></p>
+        <p class="synopsis">{{synopsis}}</p>
+        <p><b>Skådespelare: </b>{{actors}}</p>
+        <p><b>Regissör: </b>{{directors}}</p>
+        <p><b>Land: </b>{{production.country}}</p>
+        {{#if hd}}<b>HD</b>{{/if}}
+        {{parentalRating}}
+
+    </article>
+</section>
 
 <footer>
     <div class="logo">
         <a href="http://viaplay.se"></a>
     </div>
+
+    <nav>
+        <section class="categories">
+            <h4>Viaplay</h4>
+            <ul>
+                <li>Serier</li>
+                <li>Film</li>
+                <li>Sport</li>
+                <li>Barn</li>
+                <li>Hyrbutik</li>
+                <li>Prova Viaplay</li>
+            </ul>
+        </section>
+
+        <section class="categories">
+            <h4>Om oss</h4>
+            <ul>
+                <li>Press</li>
+                <li>Jobb</li>
+            </ul>
+            <h4>Viasat-kunder</h4>
+            <ul>
+                <li>Viaplay ingår</li>
+            </ul>
+        </section>
+
+        <section class="categories">
+            <h4>Information</h4>
+            <ul>
+                <li>Kundservice</li>
+                <li>Våra plattformar</li>
+                <li>Systemkrav</li>
+                <li>Allmänna villkor</li>
+                <li>Sekretesspolicy</li>
+                <li>Cookies</li>
+            </ul>
+        </section>
+
+        <section class="categories">
+            <h4>Följ oss</h4>
+            <ul>
+                <li>Facebook</li>
+                <li>Twitter</li>
+                <li>LinkedIn</li>
+            </ul>
+        </section>
+
+        <section class="categories">
+            <h4>Tv</h4>
+            <ul>
+                <li>TV3</li>
+                <li>TV10</li>
+                <li>TV6</li>
+                <li>Viasat Film</li>
+            </ul>
+        </section>
+    </nav>
 </footer>

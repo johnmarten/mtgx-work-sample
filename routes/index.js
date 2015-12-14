@@ -29,7 +29,7 @@ function parseJSON(string) {
   }
 
   if (json["_embedded"]) {
-    return json["_embedded"]["viaplay:blocks"][0]["_embedded"]["viaplay:product"]["content"];
+    return json["_embedded"]["viaplay:blocks"][0]["_embedded"]["viaplay:product"];
   } else {
     return {};
   }
@@ -38,7 +38,9 @@ function parseJSON(string) {
 router.get(`${path}:name`, (req, res, next) => {
   fetchData(`${viaplayUrl}${path}${req.params.name}`, (body) => {
 
-    const content = parseJSON(body);
+    const viaplayProduct = parseJSON(body);
+    const content = viaplayProduct.content;
+    const systemFlags = viaplayProduct.system.flags;
     const id = content.imdb.id.match(/\d+/)[0];
 
     fetchData(`${traileraddictUrl}?imdb=${id}&count=1&width=680&credit=no`, (body) => {
@@ -53,7 +55,9 @@ router.get(`${path}:name`, (req, res, next) => {
           directors: content.people.directors,
           production: content.production,
           synopsis: content.synopsis,
-          title: content.title
+          title: content.title,
+          genres: viaplayProduct["_links"]["viaplay:genres"],
+          hd: systemFlags[0] === 'hd' || systemFlags[1] === 'hd'
         });
       });
     }, (err) => {
