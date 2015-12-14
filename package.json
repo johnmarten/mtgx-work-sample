@@ -1,7 +1,7 @@
 {
   "name": "mtgx-work-sample",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
     "start": "PORT=8080 node ./bin/www"
   },
