@@ -4,4 +4,7 @@ npm install
 
 npm start
 
+localhost:8080/web-se/film/:name
+
 Uses Express, Less and Handlebars
+
